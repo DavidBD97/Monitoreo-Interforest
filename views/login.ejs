@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+
+
+
+
+    <title>Interforest Login</title>
+
+
+
+    <!--Bootstrap core CSS-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sign-in.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+    
+  </head>
+  <body class="d-flex align-items-center py-4 bg-body-tertiary">
+
+<main class="form-signin w-100 m-auto text-center shadow-lg mb-5" >
+  <form id="formLogin" action="/login" method="POST">
+    <img class="mb-4" src="img/logo_if.png" alt="" width="300" height="60" >
+    <h1 class="h3 mb-3 fw-normal">LOGIN</h1>
+
+    <div class="form-floating">
+      <input type="text" class="form-control" id="user" name="user" placeholder="User">
+      <label for="user">User Name</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="pass" name="pass" placeholder="Password">
+      <label for="pass">Password</label>
+    </div>
+    
+    <button class="btn btn-lg btn-bd-primary w-100 py-2" type="submit">Login</button>
+  </form>
+
+  <br>
+  <a href="/registerUser" type="button" class="w-100 btn btn-lg btn-bd-primary">Registrarse</a>
+  
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <% if(alert) { %>
+    <script>
+      Swal.fire({
+        title: '<%= alertTitle %>',
+        text:'<%= alertMessage %>',
+        icon:'<%= alertIcon %>',
+        showConfirmButton: <%= showConfirmButton %>,
+        timer: <%= timer %>
+      }).then(()=>{
+        window.location = '<%= ruta %>'
+      })
+    </script>
+  <% } %>
+
+  </body>
+    
+</html>

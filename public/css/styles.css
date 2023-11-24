@@ -1,0 +1,4 @@
+/*Estilos de boton*/
+.btn-bd-primary{font-weight: 600;color: black;background-color: sandybrown; border-color: salmon;}
+.btn-bd-primary:hover,.btn-bd-primary:active{color: whitesmoke;background-color: orange; border-color: black;}
+.btn-bd-primary:focus{box-shadow: 0010px rgba(121, 82, 179, 0.25)}
