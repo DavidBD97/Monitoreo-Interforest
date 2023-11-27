@@ -1,4 +1,3 @@
-
         document.getElementById('agregar').addEventListener("click", function(e){
             e.preventDefault();
             Swal.fire({

@@ -1,9 +1,13 @@
+
 const sql = require('mssql');
 
 exports.getData = async (req, res) => {
     const pool = new sql.Request();
-    pool.query(
-        'SELECT C.nom_Cliente, C.telefono, C.correo, P.pedido, P.estatus, P.CORTE, P.ENCHAPE, P.EMBALAJE, P.GA, P.fecha_Inicio, P.lugar_Destino, P.fecha_Entrega FROM CLIENTE AS C INNER JOIN PROYECTOS AS P ON C.id_Cliente = P.id_Cliente',
+
+    const completo = 'ENTREGADO'
+    pool.input('state', sql.VarChar, completo)
+        .query(
+        'SELECT C.nom_Cliente, C.correo, C.telefono, C.estado_Republica, C.CP, C.municipio_Ciudad,  P.id_Producto, P.pedido, P.fecha_Inicio, P.cant_PZAS, P.medida_M2, P.GA, P.estatus, P.fecha_Entrega, P.CORTE, P.ENCHAPE, P.EMBALAJE, P.tipo_EM, P.canto_A1, P.canto_A2, P.canto_L1, P.canto_L2, P.cant_Tablero, P.cant_RET, P.medida_ML, P.PTR, P.REM, P.lugar_Destino, P.tipo_Trasporte FROM CLIENTE AS C INNER JOIN PROYECTOS AS P ON C.id_Cliente = P.id_Cliente WHERE P.estatus <> @state ',
         (err, results) => {
             if (err) {
                 console.error(err);
@@ -26,38 +30,36 @@ exports.updateProyecto = async(req, res)=>{
         .query('UPDATE PROYECTOS SET CORTE = @valorCorte, EMBALAJE = @valorEmbalaje, ENCHAPE = @valorEnchape, estatus = @valorEstatus WHERE pedido = @idPedido')
   };
 
-exports.getDataView = async(req, res)=>{
+  exports.getDataView = async (req, res) => {
+    try {
+        // Accede al valor del input usando req.query
+        const pedido = {...req.params};
+
+        console.log('Pedido:', pedido);
+
+        // Resto del código...
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error interno del servidor');
+    }
+};
+
+exports.getDataVisual = async(req , res )=>{
     try {
         const pool = new sql.Request();
-        const {idPedido} = req.params;
+        
 
-        console.log(idPedido);
+        const visual = await pool.query('SELECT C.nom_Cliente, C.correo, C.telefono, C.estado_Republica, C.CP, C.municipio_Ciudad, T.cod_Tab, T.descripcion,  P.id_Producto, P.pedido, P.fecha_Inicio, P.cant_PZAS, P.medida_M2, P.GA, P.estatus, P.fecha_Entrega, P.CORTE, P.ENCHAPE, P.EMBALAJE, P.tipo_EM, P.canto_A1, P.canto_A2, P.canto_L1, P.canto_L2, P.cant_Tablero, P.cant_RET, P.medida_ML, P.PTR, P.REM, P.lugar_Destino, P.tipo_Trasporte FROM CLIENTE AS C INNER JOIN PROYECTOS AS P ON C.id_Cliente = P.id_Cliente INNER JOIN  PRODUCTO AS T ON P.id_Producto = T.id_Producto')
 
-        const visualizarPedido = await pool.input('idOrden', sql.VarChar, idPedido)
-                                  .query('SELECT C.nom_Cliente, C.correo, C.telefono, C.direccion,  P.id_Producto, P.pedido, P.fecha_Inicio, P.cant_PZAS, P.medida_M2, P.GA, P.estatus, P.fecha_Entrega, P.CORTE, P.ENCHAPE, P.EMBALAJE, P.tipo_EM, P.modelo_A1, P.modelo_A2, P.modelo_L1, P.modelo_L2, P.cant_Tablero, P.cant_RET, P.medida_ML, P.PTR, P.REM, P.lugar_Destino, P.tipo_Trasporte FROM CLIENTE AS C INNER JOIN PROYECTOS AS P ON P.id_Cliente = C.id_Cliente WHERE P.pedido = @idOrden')
-                                  
-        const productoId = visualizarPedido.recordset[0].id_Producto
 
-  
-        const viewProducto = await pool.input('idPro', sql.Int, productoId)
-                               .query('SELECT * FROM PRODUCTO WHERE id_Producto = @idPro')
-
-        const productoResult = await pool.query(' SELECT * FROM PRODUCTO');
-        const clienteResult = await pool.query('SELECT * FROM CLIENTE');
-        const modeloResult = await pool.query('SELECT * FROM PRODUCTOS_MODELOS')
-
-        const results = [
-            visualizarPedido.recordset,
-            viewProducto.recordset,
-            productoResult.recordset,
-            clienteResult.recordset,
-            modeloResult.recordset,
-        ]
-
-        console.log(results);
-        return res.render('view', { results: results });
+            
+        
+ 
+        return res.render('temporal', {results: visual.recordset})
+         
     } catch (error) {
-        console.log(error);
+        // Manejar errores si es necesario
+        console.error(error);
     }
 };
 

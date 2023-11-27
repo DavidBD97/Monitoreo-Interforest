@@ -23,11 +23,17 @@ router.get('/registerUser', (req, res)=>{
     res.render('nuevo_usuario')
 })
 
-router.get('/view?idPedido', [auth.isAuthenticated,monitoreo.getDataView], (req, res) =>{
-    res.render('view',{results})
-})
+//router.get('/view', [auth.isAuthenticated, monitoreo.getDataVisual],(req, res) => {
+//    res.render('view', {results});
+//});
 
+router.get('/view_Temporal', [auth.isAuthenticated, monitoreo.getDataVisual],(req, res) => {
+    res.render('temporal', {results});
+});
 
+//router.get('/view:id', [auth.isAuthenticated,monitoreo.getDataView],(req, res) => {
+//    res.render('view', {results});
+//});
 
 //Metodos de controller
 router.post('/registerUser', auth.register)
@@ -40,7 +46,7 @@ router.post('/actualizar_proyecto', monitoreo.updateProyecto)
 
 router.post('/delete_proyecto', monitoreo.deleteProyecto)
 
-//router.post('/visualizar_pedido')
+//router.post('/visualizar_pedido', monitoreo.getDataVisual)
 
 
 router.get('/logout', auth.logout)

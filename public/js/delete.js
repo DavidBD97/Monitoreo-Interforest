@@ -15,7 +15,6 @@
             },
             body: JSON.stringify(data)
           };
-    
           Swal.fire({
             title: "Eliminar pedido?",
             icon: "warning",
@@ -25,26 +24,26 @@
             confirmButtonText: "Confirmar!"
           }).then((result) => {
             if (result.isConfirmed) {
-
               fetch(url, requestOptions)
                 .then(response => {
                   if (response.ok) {
-                    console.log('Entro en mensaje de confirmacion')
 
-                   Swal.fire({
-                    title: "Eliminado!",
-                    text: "Pedido eliminado!",
-                    icon: "success",
-                  }).then(() => {
-                    window.location.href = "/  ";
-                  })
                   } else {
+
                     throw new Error('Error en la solicitud.');
                   }
                 })
                 .catch(error => {
                   console.error(error);
                 });
+
+                Swal.fire({
+                  title: "Eliminado!",
+                  text: "Pedido eliminado!",
+                  icon: "success"
+                }).then(() => {
+                  window.location.href = "/";
+                })
             }
           });
         });

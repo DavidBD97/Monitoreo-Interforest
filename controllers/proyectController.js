@@ -1,5 +1,5 @@
 const sql = require('mssql');
-const { default: Swal } = require('sweetalert2');
+
 
 exports.newOperacion = async(req, res)=>{
     try {
@@ -10,16 +10,6 @@ exports.newOperacion = async(req, res)=>{
         let numP = 0;
         let fecha = '';
 
-        //Validar campos vacios importantes
-            if (!orden.nom_Cliente || !orden.pedido || !orden.descripcion || !orden.fecha_Entrega || !orden.lugar_Destino || !orden.tipo_Trasporte || !orden.tipo_EM) {
-                res.render('register',
-                    Swal.fire({
-                    title: "Precaucion",
-                    text: "Datos Faltantes!!",
-                    icon: "warning"
-                    })
-                )
-            }
 
         //Obtener ID del Cliente
             const validarCliente = await pool.input('cliente', sql.VarChar, orden.nom_Cliente)
@@ -36,10 +26,12 @@ exports.newOperacion = async(req, res)=>{
             if (validarCliente.rowsAffected[0] == 0) {
                 console.log('Entro en la validacion de existencia del cliente');
                 pool.input('nombreC', sql.VarChar, orden.nom_Cliente)
-                    .input('correoC', sql.VarChar, orden.correo)
+                    .input('cpC', sql.Int, orden.code_P)
+                    .input('direccionC', sql.VarChar, orden.estado_Republica)
+                    .input('muniC', sql.VarChar, orden.municipio)
                     .input('telefonoC', sql.VarChar, orden.telefono)
-                    .input('direccionC', sql.VarChar, orden.lugar_Destino)
-                    .query('INSERT INTO CLIENTE VALUES(@nombreC, @correoC, @telefonoC, @direccionC)');
+                    .input('correoC', sql.VarChar, orden.correo)
+                    .query('INSERT INTO CLIENTE (nom_Cliente, CP, estado_Republica, municipio_Ciudad, telefono, correo) VALUES (@nombreC, @cpC, @direccionC, @muniC, @telefonoC, @correoC)');
             }
 
             idCliente = await pool.input('client', sql.VarChar, orden.nom_Cliente)
@@ -81,16 +73,6 @@ exports.newOperacion = async(req, res)=>{
             embalaje = 0;
         }
 
-        //Convertir Flag
-        let indicador;
-        if (orden.flag == 'EN PROCESO') {
-            indicador = 1
-        } else if(orden.flag == 'ENVIADO'){
-            indicador = 2
-        }else{
-            indicador = 3
-        }
-
    const addProyecto = await pool.input('id_Cliente', sql.Int, idCliente.recordset[0].id_Cliente)
                                  .input('id_Producto', sql.Int, idProducto.recordset[0].id_Producto)
                                  .input('pedido', sql.VarChar, orden.pedido)
@@ -105,10 +87,10 @@ exports.newOperacion = async(req, res)=>{
                                  .input('ENCHAPE', sql.Int, enchape)
                                  .input('EMBALAJE', sql.Int, embalaje)
                                  .input('tipo_EM', sql.VarChar, orden.tipo_EM)
-                                 .input('id_modelo_A1', sql.VarChar, orden.modelo_A1)
-                                 .input('id_modelo_A2', sql.VarChar, orden.modelo_A2)
-                                 .input('id_modelo_L1', sql.VarChar, orden.modelo_L1)
-                                 .input('id_modelo_L2', sql.VarChar, orden.modelo_L2)
+                                 .input('id_canto_A1', sql.VarChar, orden.canto_A1)
+                                 .input('id_canto_A2', sql.VarChar, orden.canto_A2)
+                                 .input('id_canto_L1', sql.VarChar, orden.canto_L1)
+                                 .input('id_canto_L2', sql.VarChar, orden.canto_L2)
                                  .input('cant_Tablero', sql.Int, orden.cant_Tablero)
                                  .input('cant_RET', sql.Int, orden.cant_RET)
                                  .input('medida_ML', sql.Float, orden.medida_ML)
@@ -116,8 +98,7 @@ exports.newOperacion = async(req, res)=>{
                                  .input('REM', sql.VarChar, orden.REM)
                                  .input('lugar_Destino', sql.VarChar, orden.lugar_Destino)
                                  .input('tipo_Trasporte', sql.VarChar, orden.tipo_Trasporte)
-                                 .input('flag', sql.Int, indicador)
-                                 .query('INSERT INTO PROYECTOS VALUES (@id_Cliente, @id_Producto, @pedido, @orden_de_Ped, @fecha_Inicio, @cant_PZAS, @medida_M2, @GA, @estatus, @fecha_Entrega, @CORTE, @ENCHAPE, @EMBALAJE, @tipo_EM, @id_modelo_A1, @id_modelo_A2, @id_modelo_L1, @id_modelo_L2, @cant_Tablero, @cant_RET, @medida_ML, @PTR, @REM, @lugar_Destino, @tipo_Trasporte, @flag)', (err, result)=>{
+                                 .query('INSERT INTO PROYECTOS VALUES (@id_Cliente, @id_Producto, @pedido, @orden_de_Ped, @fecha_Inicio, @cant_PZAS, @medida_M2, @GA, @estatus, @fecha_Entrega, @CORTE, @ENCHAPE, @EMBALAJE, @tipo_EM, @id_canto_A1, @id_canto_A2, @id_canto_L1, @id_canto_L2, @cant_Tablero, @cant_RET, @medida_ML, @PTR, @REM, @lugar_Destino, @tipo_Trasporte)', (err, result)=>{
                                     if(result.rowsAffected.length === 0 ){
                                        console.log('Error');
                                     }else{
@@ -141,7 +122,7 @@ exports.getDataRegister = async(req, res)=>{
 
         const productoResult = await pool.query(' SELECT * FROM PRODUCTO');
         const clienteResult = await pool.query('SELECT * FROM CLIENTE');
-        const modeloResult = await pool.query('SELECT * FROM PRODUCTOS_MODELOS')
+        const cantoResult = await pool.query('SELECT * FROM PRODUCTOS_CANTOS')
         const numPedido = await pool.query('SELECT * FROM [dbo].[PROYECTOS] WHERE id_Orden = (SELECT MAX(id_Orden) FROM PROYECTOS)');
 
         if(numPedido.rowsAffected[0] == 0){
@@ -161,7 +142,7 @@ exports.getDataRegister = async(req, res)=>{
             [
                 clienteResult.recordset,
                 productoResult.recordset,
-                modeloResult.recordset,
+                cantoResult.recordset,
                 pedidoN,
                 fechaFormateada
             ]

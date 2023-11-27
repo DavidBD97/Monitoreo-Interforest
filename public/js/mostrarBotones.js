@@ -14,10 +14,12 @@
       viewButtons.forEach((viewButton) => {
         viewButton.style.display = "none";
       });
+
       deleteButtons.forEach((deleteButton) => {
         deleteButton.style.display = "none";
       });
 
+      //hacer accesisbles los select
       editablesSelect.forEach((select) => {
         select.disabled = false;
       });
@@ -28,5 +30,6 @@
       
       // Oculta el botón "Editar"
       button.style.display = "none";
+
     })
   })

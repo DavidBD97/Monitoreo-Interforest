@@ -12,6 +12,9 @@ cancelButtons.forEach(function (cancelButton) {
     editCeldas.forEach(function (cell) {
       var originalValue = cell.getAttribute('data-original-value');
       var select = cell.querySelector('select');
+      
+      
+
       if(select){
         var options = select.options;
         for (var i = 0; i < options.length; i++){
@@ -22,16 +25,20 @@ cancelButtons.forEach(function (cancelButton) {
       }else{
         cell.textContent = originalValue;
       }
+
+      cell.style.backgroundColor = ''
     });
     
     // Hacer que las celdas sean disabled
     editableSelect.forEach(function (editableSelect) {
       editableSelect.disabled = true;
+      editableSelect.style.backgroundColor = ''
     });
 
     //Ocultar botones
     row.querySelector('.save-btn').style.display = 'none';
     row.querySelector('.cancel-btn').style.display = 'none';
+    
 
     //Mostrar botones
     row.querySelector('.edit-btn').style.display = 'inline';

@@ -8,8 +8,8 @@
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
 
     <style>
         .card-header {
@@ -18,7 +18,7 @@
         }
 
         .form-floating {
-            margin-bottom: 10px;
+            margin-bottom: 2px;
         }
 
         .form-control{
@@ -30,6 +30,12 @@
 
         .etiqueta{
             font-weight: normal;
+        }
+
+        .busqueda{
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 30px;
         }
     </style>
 
@@ -55,143 +61,240 @@
           </li>
         </ul>
       </div>
-      
+
+        <div class="busqueda">
+            <div class="form-floating col-2" style="margin-right: 30px;">
+                <input id="search" name="pedido" class="form-control border border-info">
+                <label class="etiqueta" for="search">Ingrese #Pedido</label>
+            </div>
+    
+            <div style="margin-right: 30px;">
+                <button class="btn btn-warning"> BUSCAR</button>
+            </div>
+        </div>
+    
+
       <div class="container">
         <div class="row">
             <div class="card-header text-dark fs-5">Datos Generales</div>
-            <form class="row g-1">
-                <div class="form-floating col-6">
-                    <input id="nom_Cliente" name="nom_Cliente" value="<% results[0].nom_Cliente%>" class="form-control editable" contenteditable="true" placeholder="nom_Cliente">
-                    <label  class="etiqueta" for="nom_Cliente">Cliente</label>
-               </div>
+        
+            <div class="form-floating col-6">
+                <input list="cliente" id="nom_Cliente" name="nom_Cliente" class="form-control editable" contenteditable="true" placeholder="nom_Cliente">
+                <datalist id="cliente"> 
+                    <option></option>
+                    <% results[1].forEach(function(result) { %>
+                        <option data-correo="<%= result.correo%>" data-telefono="<%= result.telefono %>" data-direccion="<%= result.estado_Republica %>" data-cp="<%= result.CP %>" data-municipio="<%= result.municipio_Ciudad %>"><%= result.nom_Cliente %></option>
+                    <% }); %>
+                </datalist>
+                <label class="etiqueta" for="nom_Cliente">Cliente</label>
+           </div>
 
-               <div class="form-floating col-4">
-                    <input id="lugar_Destino" name="lugar_Destino" type="text" class="form-control" placeholder="direccion">
-                    <label class="etiqueta" for="lugar_Destino">Destino</label>
-               </div>
+           <div class="form-floating col-2">
+                <input id="lugar_Destino" name="lugar_Destino" type="text" class="form-control" placeholder="direccion">
+                <label  class="etiqueta" for="lugar_Destino">Destino</label>
+           </div>
 
-               <div class="form-floating col-2">
-                    <input id="fecha_Inicio" name="fecha_Inicio" type="date" class="form-control" placeholder="FECHA">
-                    <label class="etiqueta" for="fecha_Inicio"> Fecha de Orden</label>
-               </div>
+           <div class="form-floating col-1">
+                <input id="code_P" name="code_P" type="text" class="form-control" placeholder="CP">
+                <label  class="etiqueta" for="code_P">C.P</label>
+           </div>
 
-               <div class="form-floating col-5">
-                    <input id="telefono" name="telefono" type="tel" class="form-control" placeholder="telefono">
-                    <label class="etiqueta" for="telefono">Telefono</label>
-                </div> 
+           <div class="form-floating col-2">
+                <input id="municipio" name="municipio" type="text" class="form-control" placeholder="municipio">
+                <label  class="etiqueta" for="municipio">Municipio/Ciudad<label>
+           </div>
 
-                <div class="form-floating col-5">
-                    <input id="correo" name="correo" type="email" class="form-control" placeholder="correo">
-                    <label class="etiqueta" for="correo">Correo</label>
-                </div> 
-                
-                <div class="card-header text-dark fs-5">Orden</div>
+           <div class="form-floating col-2">
+                <input id="fecha_Inicio" name="fecha_Inicio" value="" type="date" class="form-control" placeholder="FECHA">
+                <label  class="etiqueta" for="fecha_Inicio"> Fecha de Orden</label>
+           </div>
 
-                <div class="form-floating col-2">
-                    <input id="orden_Pedido" name="pedido" type="text" class="form-control editable" readonly placeholder="NUM_PEDIDO">
-                    <label class="etiqueta" for="orden_Pedido"># de Pedido</label>
-                </div> 
-                <div class="form-floating col-2">
-                    <input id="cant_PZAS" name="cant_PZAS" type="number" class="form-control" placeholder="PIEZAS">
-                    <label class="etiqueta" for="cant_PZAS">Piezas</label>
-                </div>  
-                <div class="form-floating col-2">
-                    <input id="M2" name="medida_M2" type="number" step="any" class="form-control" placeholder="M2">
-                    <label class="etiqueta" for="M2">M2</label>
-                </div>  
-                <div class="form-floating col-2">
-                    <input id="GA" name="GA" type="text" class="form-control" placeholder="GA">
-                    <label class="etiqueta" for="GA">GA</label>
-                </div>  
-                <div class="form-floating col-2">
-                    <input list="estatusList" id="estatus" name="estatus" class="form-control" placeholder="ESTATUS">
-                    <label class="etiqueta" for="estatus">Estatus</label>
-                </div>  
-                <div class="form-floating col-2">
-                    <input id="fecha_Entrega" name="fecha_Entrega" type="date" class="form-control" placeholder="FECHA_ENTREGA">
-                    <label class="etiqueta" for="fecha_Entrega">Fecha Entrega</label>
-                </div>
+           <div class="form-floating col-5">
+                <input id="telefono" name="telefono" type="tel" class="form-control" placeholder="telefono">
+                <label class="etiqueta" for="telefono">Telefono</label>
+            </div> 
 
-                <div class="card-header text-dark fs-5">Detalle</div>
+            <div class="form-floating col-5">
+                <input id="correo" name="correo" type="email" class="form-control" placeholder="correo">
+                <label class="etiqueta" for="correo">Correo</label>
+            </div> 
+            
+            <div class="card-header text-dark fs-5">Orden</div>
 
-                <div class="form-floating col-5">
-                    <input list="producto" id="descripcion" name="descripcion" class="form-control custom-select" placeholder="DESCRIPCION">
-                    <label class="etiqueta" for="descripcion">Descripcion</label>
-                </div>
+            <div class="form-floating col-2">
+                <input id="orden_Pedido" name="pedido" value="" type="text" class="form-control editable" readonly placeholder="NUM_PEDIDO">
+                <label class="etiqueta" for="orden_Pedido"># de Pedido</label>
+            </div> 
+            <div class="form-floating col-2">
+                <input id="cant_PZAS" name="cant_PZAS" type="number" class="form-control" placeholder="PIEZAS">
+                <label  class="etiqueta" for="cant_PZAS">Piezas</label>
+            </div>  
+            <div class="form-floating col-2">
+                <input id="M2" name="medida_M2" type="number" step="any" class="form-control" placeholder="M2">
+                <label class="etiqueta" for="M2">M2</label>
+            </div>  
+            <div class="form-floating col-2">
+                <input id="GA" name="GA" type="text" class="form-control" placeholder="GA">
+                <label class="etiqueta" for="GA">GA</label>
+            </div>  
+            <div class="form-floating col-2">
+                <input list="estatusList" id="estatus" name="estatus" class="form-control" placeholder="ESTATUS">
+                <datalist id="estatusList">
+                    <option >CREADO</option>
+                    <option >EN PROCESO</option>
+                </datalist>
+                <label  class="etiqueta" for="estatus">Estatus</label>
+            </div>  
+            <div class="form-floating col-2">
+                <input id="fecha_Entrega" name="fecha_Entrega" type="date" class="form-control" placeholder="FECHA_ENTREGA">
+                <label  class="etiqueta" for="fecha_Entrega">Fecha Entrega</label>
+            </div>
 
-                <div class="form-floating col-3 ms-4">
-                    <input id="cod_Tab" name="cod_Tab" type="text" class="form-control" placeholder="COD">
-                    <label class="etiqueta" for="cod_Tab">Codigo tab</label>
-                </div>
-                
-                <div class="form-floating col-1 ms-4">
-                    <input list="corteList" name="CORTE" id="corte" class="form-control" placeholder="CORTE">
-                    <label class="etiqueta" for="corte">Corte</label>
-                </div> 
-                <div class="form-floating col-1 ms-1">
-                    <input list="enchapeList" name="ENCHAPE" id="enchape" type="text" class="form-control" placeholder="ENCHAPE">
-                    <label class="etiqueta" for="enchape">Enchape</label>
-                </div> 
-                <div class="form-floating col-1 ms-1">
-                    <input list="embalajeList" name="EMBALAJE" id="embalaje" type="text" class="form-control" placeholder="EMBALAJE">
-                    <label class="etiqueta" for="embalaje">Embalaje</label>
-                </div> 
+            <div class="card-header text-dark fs-5">Detalle</div>
 
-                <div class="form-floating col-2">
-                    <input id="em" name="tipo_EM" type="text" class="form-control" placeholder="EM">
-                    <label class="etiqueta" for="em">EM</label>
-                </div> 
-                <div class="form-floating col-2">
-                    <input id="a1" name="modelo_A1"  list="modeloA1" type="text" class="form-control" placeholder="A1">
-                    <label class="etiqueta" for="a1">A1</label>
-                </div> 
-                <div class="form-floating col-2">
-                    <input id="a2" name="modelo_A2" type="text" list="modeloA2" class="form-control" placeholder="A2">
-                    <label class="etiqueta" for="a2">A2</label>
-                </div> 
-                <div class="form-floating col-2">
-                    <input id="l1" name="modelo_L1" type="text"  list="modeloL1" class="form-control" placeholder="L1">
-                    <label class="etiqueta" for="l1">L1</label>
-                </div> 
-                <div class="form-floating col-2">
-                    <input id="l2" name="modelo_L2" type="text" list="modeloL2" class="form-control" placeholder="L2">
-                    <label class="etiqueta" for="l2">L2</label>
-                </div> 
+            <div class="form-floating col-5">
+                <input list="producto" id="descripcion" name="descripcion" class="form-control custom-select" placeholder="DESCRIPCION">
+                <datalist id="producto">
+                    <option></option>
+                    <% results[2].forEach(function(result) { %>
+                    <option data-value="<%= result.cod_Tab %>"><%= result.descripcion%></option>
+                    <% }); %>
+                </datalist>
+                <label class="etiqueta" for="descripcion">Descripcion</label>
+            </div>
 
-                <div class="form-floating col-2">
-                    <input id="tab" name="cant_Tablero" type="number" class="form-control" placeholder="TAB">
-                    <label class="etiqueta" for="tab">Tab</label>
-                </div>
-                <div class="form-floating col-2">
-                    <input id="ret" name="cant_RET" type="number" class="form-control" placeholder="RET">
-                    <label class="etiqueta" for="ret">Ret</label>
-                </div> 
-                <div class="form-floating col-2">
-                    <input id="ml" name="medida_ML" type="number" step="any" class="form-control" placeholder="ML">
-                    <label class="etiqueta" for="ml">Ml</label>
-                </div> 
-                <div class="form-floating col-2">
-                    <input id="ptr" name="PTR" type="text" class="form-control" placeholder="PTR">
-                    <label class="etiqueta" for="ptr">Ptr</label>
-                </div> 
-                <div class="form-floating col-2">
-                    <input id="rem" name="REM" type="text" class="form-control" placeholder="REM">
-                    <label class="etiqueta" for="rem">Rem</label>
-                </div>
-                
-                <div class="card-header text-dark fs-5">Transporte</div>
+            <div class="form-floating col-3 ms-4">
+                <input id="cod_Tab" name="cod_Tab" type="text" class="form-control" placeholder="COD">
+                <label  class="etiqueta" for="cod_Tab">Codigo tab</label>
+            </div>
+            
+            <div class="form-floating col-1 ms-4">
+                <input list="corteList" name="CORTE" id="corte" class="form-control" placeholder="CORTE">
+                <datalist id="corteList">
+                    <option></option>
+                    <option>SI</option>
+                    <option>NO</option>
+                </datalist>
+                <label class="etiqueta" for="corte">Corte</label>
+            </div> 
+            <div class="form-floating col-1 ms-1">
+                <input list="enchapeList" name="ENCHAPE" id="enchape" type="text" class="form-control" placeholder="ENCHAPE">
+                <datalist id="enchapeList">
+                    <option></option>
+                    <option>SI</option>
+                    <option>NO</option>
+                </datalist>
+                <label class="etiqueta" for="enchape">Enchape</label>
+            </div> 
+            <div class="form-floating col-1 ms-1">
+                <input list="embalajeList" name="EMBALAJE" id="embalaje" type="text" class="form-control" placeholder="EMBALAJE">
+                <datalist id="embalajeList">
+                    <option></option>
+                    <option>SI</option>
+                    <option>NO</option>
+                </datalist>
+                <label class="etiqueta" for="embalaje">Embalaje</label>
+            </div> 
 
-                <div class="form-floating col-4">
-                    <input id="transporte" name="tipo_Trasporte" type="text" class="form-control" placeholder="TRANSPORTE">
-                    <label class="etiqueta" for="transporte">Transporte</label>
-                </div>
-                
-                <div class="card-footer bg-transparent">
-                    <a href="/" type="button" class="btn btn-outline-danger">Cancelar</a>
-                    <button  href = "/" class=" btn btn-outline-warning" id="agregar">Guardar</button>
-                </div>
-            </form>
-        </div>
-      </div>
+            <div class="form-floating col-2">
+                <input  list="EMList" id="em" name="tipo_EM" type="text" class="form-control" placeholder="EM">
+                <datalist  id="EMList">
+                    <option>E1</option>
+                    <option>E2</option>
+                    <option>E3</option>
+                    <option>E4</option>
+                </datalist>
+                <label class="etiqueta" for="em">EM</label>
+            </div> 
+            <div class="form-floating col-2">
+                <input id="a1" name="canto_A1"  list="cantoA1" type="text" class="form-control" placeholder="A1">
+                <datalist id="cantoA1">
+                    <option></option>
+                <% results[2].forEach(function(result) { %>
+                    <option data-value="<%= result.id_Canto %>"> <%= result.cod_Canto%> </option>
+                <% }); %>
+            </datalist>
+                <label class="etiqueta" for="a1">A1</label>
+            </div> 
+            <div class="form-floating col-2">
+                <input id="a2" name="canto_A2" type="text" list="cantoA2" class="form-control" placeholder="A2">
+                <datalist id="cantoA2">
+                    <option></option>
+                    <% results[3].forEach(function(result) { %>
+                        <option data-value="<%= result.id_Canto %>"><%= result.cod_Canto%></option>
+                    <% }); %>
+                </datalist>
+                <label class="etiqueta" for="a2">A2</label>
+            </div> 
+            <div class="form-floating col-2">
+                <input id="l1" name="canto_L1" type="text"  list="cantoL1" class="form-control" placeholder="L1">
+                <datalist id="cantoL1">
+                    <option></option>
+                    <% results[3].forEach(function(result) { %>
+                        <option data-value="<%= result.id_Canto %>"><%= result.cod_Canto%></option>
+                    <% }); %>
+                </datalist>
+                <label class="etiqueta" for="l1">L1</label>
+            </div> 
+            <div class="form-floating col-2">
+                <input id="l2" name="canto_L2" type="text" list="cantoL2" class="form-control" placeholder="L2">
+                <datalist id="cantoL2">
+                    <option></option>
+                    <% results[3].forEach(function(result) { %>
+                        <option data-value="<%= result.id_Canto %>"><%= result.cod_Canto%></option>
+                    <% }); %>
+                </datalist>
+                <label class="etiqueta" for="l2">L2</label>
+            </div> 
+
+            <div class="form-floating col-2">
+                <input id="tab" name="cant_Tablero" type="number" class="form-control" placeholder="TAB">
+                <label class="etiqueta" for="tab">Tab</label>
+            </div>
+            <div class="form-floating col-2">
+                <input id="ret" name="cant_RET" type="number" class="form-control" placeholder="RET">
+                <label class="etiqueta" for="ret">Ret</label>
+            </div> 
+            <div class="form-floating col-2">
+                <input id="ml" name="medida_ML" type="number" step="any" class="form-control" placeholder="ML">
+                <label class="etiqueta" for="ml">Ml</label>
+            </div> 
+            <div class="form-floating col-2">
+                <input id="ptr" name="PTR" type="text" class="form-control" placeholder="PTR">
+                <label class="etiqueta" for="ptr">Ptr</label>
+            </div> 
+            <div class="form-floating col-2">
+                <input id="rem" name="REM" type="text" class="form-control" placeholder="REM">
+                <label class="etiqueta" for="rem">Rem</label>
+            </div>
+            
+            <div class="card-header text-dark fs-5">Transporte</div>
+
+            <div class="form-floating col-4">
+                <input list="transList" id="transporte" name="tipo_Trasporte" type="text" class="form-control" placeholder="TRANSPORTE">
+                <datalist id="transList">
+                    <option>CLIENTE RECOGE</option>
+                    <option>LOCAL</option>
+                    <option>PAQUETERIA</option>
+                    <option>PAQUETERIA 3 GUERRAS</option>
+                    <option>PAQUETERIA EXPRESS</option>
+                    <option>PAQUTERIA POR CONFIRMAR</option>
+                    <option>PAQUETERIA POTOSINOS</option>
+                    <option>PITIC PAQUETERIA</option>
+                    <option>PMM PAQUETERIA</option>
+                    <option>RUTA</option>
+                    <option>RUTA LOCAL</option>
+                    <option>RUTA/CLIENTE RECOGE</option>
+                    <option>SERIGRAFIA</option>
+                    <option>TRES PAQUETERIA</option>
+                </datalist>
+                <label class="etiqueta" for="transporte">Transporte</label>
+            </div>
+            
+            <div class="card-footer bg-transparent">
+                <a href="/" type="button" class="btn btn-outline-danger">Cancelar</a>
+                <button  href = "/" class=" btn btn-outline-warning" id="agregar">Agregar</button>
+            </div>
+      
 </body>
 </html>
