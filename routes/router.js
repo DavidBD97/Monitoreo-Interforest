@@ -1,39 +1,25 @@
 const Express = require('express');
 const router = Express.Router();
-const sql = require('mssql');
 
 const auth = require('../controllers/authController')
 const proyecto = require('../controllers/proyectController');
 const monitoreo = require('../controllers/monitoreoController');
 
 //Vistas
-router.get('/', [auth.isAuthenticated, monitoreo.getData],(req, res)=>{ 
-    res.render('index', {results: results})
-})
+router.get('/', [auth.isAuthenticated, monitoreo.getData],(req, res)=>{})
 
-router.get('/login', (req, res)=>{
-    res.render('login', {alert: false})
-})
+router.get('/login', (req, res)=>{res.render('login', {alert: false})})
 
-router.get('/register', [auth.isAuthenticated, proyecto.getDataRegister], (req, res)=>{
-    res.render('register', { results })
-})
+router.get('/register', [auth.isAuthenticated, proyecto.getDataRegister], (req, res)=>{})
 
-router.get('/registerUser', (req, res)=>{
-    res.render('nuevo_usuario')
-})
+router.get('/registerUser', (req, res)=>{res.render('nuevo_usuario')})
 
-//router.get('/view', [auth.isAuthenticated, monitoreo.getDataVisual],(req, res) => {
-//    res.render('view', {results});
-//});
-
-router.get('/view_Temporal', [auth.isAuthenticated, monitoreo.getDataVisual],(req, res) => {
-    res.render('temporal', {results});
+router.get('/detalle:pedido',[auth.isAuthenticated, monitoreo.getDataView] ,(req, res) => {
+    res.render('detalle', {results})
 });
 
-//router.get('/view:id', [auth.isAuthenticated,monitoreo.getDataView],(req, res) => {
-//    res.render('view', {results});
-//});
+router.get('/pedidos', [auth.isAuthenticated, monitoreo.getDataPedidos], (req, res)=>{})
+
 
 //Metodos de controller
 router.post('/registerUser', auth.register)
@@ -44,17 +30,16 @@ router.post('/registerOperacion', proyecto.newOperacion)
 
 router.post('/actualizar_proyecto', monitoreo.updateProyecto)
 
+router.post('/updatePedido', monitoreo.updatePedido)
+
 router.post('/delete_proyecto', monitoreo.deleteProyecto)
 
-//router.post('/visualizar_pedido', monitoreo.getDataVisual)
+router.post('/newCliente', proyecto.newCliente)
+
+router.post('/newProducto', proyecto.newProducto)
 
 
 router.get('/logout', auth.logout)
-
-
-
-
-
 
 
 module.exports = router;

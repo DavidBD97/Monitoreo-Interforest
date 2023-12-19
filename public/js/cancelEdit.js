@@ -12,8 +12,6 @@ cancelButtons.forEach(function (cancelButton) {
     editCeldas.forEach(function (cell) {
       var originalValue = cell.getAttribute('data-original-value');
       var select = cell.querySelector('select');
-      
-      
 
       if(select){
         var options = select.options;
@@ -26,13 +24,23 @@ cancelButtons.forEach(function (cancelButton) {
         cell.textContent = originalValue;
       }
 
-      cell.style.backgroundColor = ''
+      if (originalValue == 2) {
+        cell.style.backgroundColor = 'palegreen';
+      } else {
+        cell.style.backgroundColor = '';
+      }
+
+      if (originalValue == 2) {
+        select.style.backgroundColor = 'palegreen';
+      } else {
+        select.style.backgroundColor = '';
+      }
+
     });
     
     // Hacer que las celdas sean disabled
-    editableSelect.forEach(function (editableSelect) {
-      editableSelect.disabled = true;
-      editableSelect.style.backgroundColor = ''
+    editableSelect.forEach(function (editable) {
+      editable.disabled = true;
     });
 
     //Ocultar botones

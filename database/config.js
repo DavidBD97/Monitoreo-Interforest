@@ -15,12 +15,9 @@ const config = {
 const conexion = async () => {
     try {
        await sql.connect(config);
-       console.log('BASE DE DATOS ONLINE');
     } catch (err) {
        throw err;
     }
 }
 
-
-   
 module.exports = {conexion, config}

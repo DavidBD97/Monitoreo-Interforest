@@ -35,6 +35,8 @@ class Server{
 
         //seteamos el motor de plantillas
         this.app.set('view engine', 'ejs');
+        
+        
 
         //para procesar datos enviados dede forms
         this.app.use(express.urlencoded({extended: true}))

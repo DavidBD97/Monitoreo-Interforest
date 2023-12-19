@@ -57,20 +57,26 @@ exports.newOperacion = async(req, res)=>{
         let corte, enchape, embalaje;  
         if(orden.CORTE == 'SI') {
             corte = 1;
-        }else{
+        }else if(orden.CORTE == 'NO'){
             corte = 0;
+        }else{
+            corte = 2;
         }
 
         if (orden.ENCHAPE == 'SI') {
             enchape = 1;
-        } else {
+        } else if(orden.ENCHAPE == 'NO'){
             enchape = 0;
+        }else{
+            enchape = 2;
         }
 
         if(orden.EMBALAJE == 'SI'){
             embalaje = 1;
-        }else{
+        }else if(orden.EMBALAJE == 'NO'){
             embalaje = 0;
+        }else{
+            embalaje = 2;
         }
 
    const addProyecto = await pool.input('id_Cliente', sql.Int, idCliente.recordset[0].id_Cliente)
@@ -146,9 +152,56 @@ exports.getDataRegister = async(req, res)=>{
                 pedidoN,
                 fechaFormateada
             ]
-        return res.render('register', {results});
+        res.render('register', {results});
 
         }catch (error){
             console.log(error)
         }
+}
+
+
+exports.newCliente = async(req, res)=>{
+    try {
+        const pool = new sql.Request();
+        const body = {...req.body};
+
+        await pool.input('codC', sql.VarChar, body.cod_Cliente)
+                  .input('nombreC', sql.VarChar, body.nom_Cliente)
+                  .input('cpC', sql.Int, body.CP)
+                  .input('direccionC', sql.VarChar, body.estado_Republica)
+                  .input('muniC', sql.VarChar, body.municipio)
+                  .input('telefonoC', sql.VarChar, body.telefono)
+                  .input('correoC', sql.VarChar, body.correo)
+                  .input('contacto', sql.VarChar, body.contacto)
+                  .query('INSERT INTO CLIENTE (cod_Cliente, nom_Cliente, CP, estado_Republica, municipio_Ciudad, telefono, correo, contacto) VALUES (@codC, @nombreC, @cpC, @direccionC, @muniC, @telefonoC, @correoC, @contacto)');
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.newProducto = async(req, res)=>{
+    try {
+        const pool = new sql.Request();
+        const body = {...req.body};
+
+        await pool.input('cod', sql.VarChar, body.cod_Tab)
+                  .input('desc', sql.VarChar, body.descripcion)
+                  .query('INSERT INTO PRODUCTO (cod_Tab, descripcion) VALUES (@cod, @desc)');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.newCanto = async(req, res)=>{
+    try {
+        const pool = new sql.Request();
+        const body = {...req.body};
+
+        await pool.input('codC', sql.VarChar, body.cod_Tab)
+                  .input('descC', sql.VarChar, body.descripcion)
+                  .query('INSERT INTO PRODUCTOS_CANTOS (cod_Canto, descripcion_Canto) VALUES (@codC, @descC)');
+    } catch (error) {
+        console.log(error);
+    }
 }

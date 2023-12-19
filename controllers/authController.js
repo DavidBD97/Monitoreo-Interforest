@@ -3,18 +3,13 @@ const bcryptjs = require('bcryptjs');
 const sql = require('mssql');
 
 const {promisify} = require('util');
-const { log } = require('console');
 
-//registrar
 exports.register = async (req, res)=>{    
     try {
         const pool = new sql.Request()
         const {user, pass} = req.body;
 
-        //console.log(req.body);
-
         let passHash = await bcryptjs.hash(pass, 8)    
-        //console.log(passHash)
         pool.input('nom_Usuario', sql.VarChar, user)
             .input('pass', sql.VarChar, passHash)   
             .query('INSERT INTO USUARIOS VALUES (@nom_Usuario, @pass)', 
@@ -30,7 +25,6 @@ exports.register = async (req, res)=>{
         console.log(error)
     }       
 }
-
 
 exports.login = async(req, res)=>{
     try {

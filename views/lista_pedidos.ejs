@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Visual Temporal</title>
+        <title>PEDIDOS</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
@@ -39,10 +39,11 @@
 
       <div >
         <div class="card-header text-dark fs-4">Proyectos</div>
-        <table  id="visualTable" class="table" style="width:auto" style="width:auto;">
+        <table  id="visualTable" class="table col" style="width:auto" style="width:auto;">
           <thead class="table-light " align="center">
             <tr>
               <th>#Pedido</th>
+              <th>Orden Pedido</th>
               <th>Fecha Entrega</th>
               <th>Cliente</th>
               <th>EM</th>
@@ -73,6 +74,7 @@
             <% results.forEach(function(result) { %>
               <tr>
                   <td > <%= result.pedido %> </td>
+                  <td> <%= result.orden_de_Ped %> </td>
                   <td> <%= result.fecha_Entrega %></td>
                   <td> <%= result.nom_Cliente %> </td>
                   <td> <%= result.tipo_EM  %></td>
@@ -133,8 +135,8 @@
                       sortDescending: ": active para ordenar la columna en orden descendente"
                   }
               },
-              scrollY: 270,
-              scrollX: 270,
+              scrollY: 320,
+              scrollX: 300,
               lengthMenu: [ [5, 10, -1], [5, 10, "All"] ],
              
           });

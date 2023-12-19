@@ -7,7 +7,12 @@
 </head>
 
 
+     <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/dashboard.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     
 
@@ -62,24 +67,13 @@
         </ul>
       </div>
 
-        <div class="busqueda">
-            <div class="form-floating col-2" style="margin-right: 30px;">
-                <input id="search" name="pedido" class="form-control border border-info">
-                <label class="etiqueta" for="search">Ingrese #Pedido</label>
-            </div>
-    
-            <div style="margin-right: 30px;">
-                <button class="btn btn-warning"> BUSCAR</button>
-            </div>
-        </div>
-    
 
       <div class="container">
         <div class="row">
             <div class="card-header text-dark fs-5">Datos Generales</div>
-        
+            <form class="row g-1" id="updateProyecto" action="/updatePedido" method="POST">
             <div class="form-floating col-6">
-                <input list="cliente" id="nom_Cliente" name="nom_Cliente" class="form-control editable" contenteditable="true" placeholder="nom_Cliente">
+                <input value="<%= results[0][0].nom_Cliente %>" list="cliente" type="text" id="nom_Cliente" name="nom_Cliente"class="form-control editable" contenteditable="true" placeholder="nom_Cliente">
                 <datalist id="cliente"> 
                     <option></option>
                     <% results[1].forEach(function(result) { %>
@@ -90,55 +84,55 @@
            </div>
 
            <div class="form-floating col-2">
-                <input id="lugar_Destino" name="lugar_Destino" type="text" class="form-control" placeholder="direccion">
+                <input id="lugar_Destino" name="lugar_Destino" value="<%= results[0][0].lugar_Destino %>" type="text" class="form-control" placeholder="direccion">
                 <label  class="etiqueta" for="lugar_Destino">Destino</label>
            </div>
 
            <div class="form-floating col-1">
-                <input id="code_P" name="code_P" type="text" class="form-control" placeholder="CP">
+                <input id="code_P" name="code_P" value="<%= results[0][0].CP %>"  type="text" class="form-control" placeholder="CP">
                 <label  class="etiqueta" for="code_P">C.P</label>
            </div>
 
            <div class="form-floating col-2">
-                <input id="municipio" name="municipio" type="text" class="form-control" placeholder="municipio">
+                <input id="municipio" name="municipio" value="<%= results[0][0].municipio_Ciudad%>"  type="text" class="form-control" placeholder="municipio">
                 <label  class="etiqueta" for="municipio">Municipio/Ciudad<label>
            </div>
 
            <div class="form-floating col-2">
-                <input id="fecha_Inicio" name="fecha_Inicio" value="" type="date" class="form-control" placeholder="FECHA">
+                <input id="fecha_Inicio" name="fecha_Inicio" value="<%= results[0][0].fecha_Inicio %>" type="date" class="form-control" placeholder="FECHA">
                 <label  class="etiqueta" for="fecha_Inicio"> Fecha de Orden</label>
            </div>
 
            <div class="form-floating col-5">
-                <input id="telefono" name="telefono" type="tel" class="form-control" placeholder="telefono">
+                <input id="telefono" name="telefono" value="<%= results[0][0].telefono %>" type="tel" class="form-control" placeholder="telefono">
                 <label class="etiqueta" for="telefono">Telefono</label>
             </div> 
 
             <div class="form-floating col-5">
-                <input id="correo" name="correo" type="email" class="form-control" placeholder="correo">
+                <input id="correo" name="correo" value="<%= results[0][0].correo %>" type="email" class="form-control" placeholder="correo">
                 <label class="etiqueta" for="correo">Correo</label>
             </div> 
             
             <div class="card-header text-dark fs-5">Orden</div>
 
             <div class="form-floating col-2">
-                <input id="orden_Pedido" name="pedido" value="" type="text" class="form-control editable" readonly placeholder="NUM_PEDIDO">
-                <label class="etiqueta" for="orden_Pedido"># de Pedido</label>
+                <input id="orden_Pedido" name="pedido" value="<%= results[0][0].pedido %>" type="text" class="form-control editable" readonly placeholder="NUM_PEDIDO">
+                <label class="etiqueta" for="orden_Pedido">#Pedido</label>
             </div> 
             <div class="form-floating col-2">
-                <input id="cant_PZAS" name="cant_PZAS" type="number" class="form-control" placeholder="PIEZAS">
+                <input id="cant_PZAS" name="cant_PZAS" value="<%= results[0][0].cant_PZAS %>" type="number" class="form-control" placeholder="PIEZAS">
                 <label  class="etiqueta" for="cant_PZAS">Piezas</label>
             </div>  
             <div class="form-floating col-2">
-                <input id="M2" name="medida_M2" type="number" step="any" class="form-control" placeholder="M2">
+                <input id="M2" name="medida_M2" type="number" value="<%= results[0][0].medida_M2 %>" step="any" class="form-control" placeholder="M2">
                 <label class="etiqueta" for="M2">M2</label>
             </div>  
             <div class="form-floating col-2">
-                <input id="GA" name="GA" type="text" class="form-control" placeholder="GA">
+                <input id="GA" name="GA" type="text" value="<%= results[0][0].GA %>" class="form-control" placeholder="GA">
                 <label class="etiqueta" for="GA">GA</label>
             </div>  
             <div class="form-floating col-2">
-                <input list="estatusList" id="estatus" name="estatus" class="form-control" placeholder="ESTATUS">
+                <input list="estatusList" id="estatus" value="<%= results[0][0].estatus %>" name="estatus" class="form-control" placeholder="ESTATUS">
                 <datalist id="estatusList">
                     <option >CREADO</option>
                     <option >EN PROCESO</option>
@@ -146,14 +140,14 @@
                 <label  class="etiqueta" for="estatus">Estatus</label>
             </div>  
             <div class="form-floating col-2">
-                <input id="fecha_Entrega" name="fecha_Entrega" type="date" class="form-control" placeholder="FECHA_ENTREGA">
+                <input id="fecha_Entrega" name="fecha_Entrega" value="<%= results[0][0].fecha_Entrega %>" type="date" class="form-control" placeholder="FECHA_ENTREGA">
                 <label  class="etiqueta" for="fecha_Entrega">Fecha Entrega</label>
             </div>
 
             <div class="card-header text-dark fs-5">Detalle</div>
 
             <div class="form-floating col-5">
-                <input list="producto" id="descripcion" name="descripcion" class="form-control custom-select" placeholder="DESCRIPCION">
+                <input list="producto" id="descripcion" name="descripcion" value="<%= results[0][0].descripcion %>" class="form-control custom-select" placeholder="DESCRIPCION">
                 <datalist id="producto">
                     <option></option>
                     <% results[2].forEach(function(result) { %>
@@ -164,40 +158,37 @@
             </div>
 
             <div class="form-floating col-3 ms-4">
-                <input id="cod_Tab" name="cod_Tab" type="text" class="form-control" placeholder="COD">
+                <input id="cod_Tab" name="cod_Tab" value="<%= results[0][0].cod_Tab %>" type="text" class="form-control" placeholder="COD">
                 <label  class="etiqueta" for="cod_Tab">Codigo tab</label>
             </div>
             
             <div class="form-floating col-1 ms-4">
-                <input list="corteList" name="CORTE" id="corte" class="form-control" placeholder="CORTE">
+                <input list="corteList" name="CORTE" value="<%= results[0][0].CORTE === 1 ? 'SI' : (results[0][0].CORTE === 2 ? 'OK': 'NO')%>" id="corte" class="form-control" placeholder="CORTE">
                 <datalist id="corteList">
-                    <option></option>
-                    <option>SI</option>
-                    <option>NO</option>
+                    <option> <%= results[0][0].CORTE === 1 ? 'NO' : 'SI' %> </option>
+                    <option> <%= results[0][0].CORTE === 1 ? 'OK' : (results[0][0].CORTE === 0 ? 'OK': 'NO') %> </option>
                 </datalist>
                 <label class="etiqueta" for="corte">Corte</label>
             </div> 
             <div class="form-floating col-1 ms-1">
-                <input list="enchapeList" name="ENCHAPE" id="enchape" type="text" class="form-control" placeholder="ENCHAPE">
+                <input list="enchapeList" name="ENCHAPE" value="<%= results[0][0].ENCHAPE === 1 ? 'SI' : (results[0][0].ENCHAPE === 2 ? 'OK': 'NO')%>" id="enchape" type="text" class="form-control" placeholder="ENCHAPE">
                 <datalist id="enchapeList">
-                    <option></option>
-                    <option>SI</option>
-                    <option>NO</option>
+                    <option> <%= results[0][0].ENCHAPE === 1 ? 'NO' : 'SI' %> </option>
+                    <option> <%= results[0][0].ENCHAPE === 1 ? 'OK' : (results[0][0].ENCHAPE === 0 ? 'OK': 'NO') %> </option>
                 </datalist>
                 <label class="etiqueta" for="enchape">Enchape</label>
             </div> 
             <div class="form-floating col-1 ms-1">
-                <input list="embalajeList" name="EMBALAJE" id="embalaje" type="text" class="form-control" placeholder="EMBALAJE">
+                <input list="embalajeList" name="EMBALAJE" value="<%= results[0][0].EMBALAJE === 1 ? 'SI' : (results[0][0].EMBALAJE === 2 ? 'OK': 'NO')%>" id="embalaje" type="text" class="form-control" placeholder="EMBALAJE">
                 <datalist id="embalajeList">
-                    <option></option>
-                    <option>SI</option>
-                    <option>NO</option>
+                    <option> <%= results[0][0].EMBALAJE === 1 ? 'NO' : 'SI' %> </option>
+                    <option> <%= results[0][0].EMBALAJE === 1 ? 'OK' : (results[0][0].EMBALAJE === 0 ? 'OK': 'NO') %> </option>
                 </datalist>
                 <label class="etiqueta" for="embalaje">Embalaje</label>
             </div> 
 
             <div class="form-floating col-2">
-                <input  list="EMList" id="em" name="tipo_EM" type="text" class="form-control" placeholder="EM">
+                <input  list="EMList" id="em" name="tipo_EM" value="<%= results[0][0].tipo_EM %>" type="text" class="form-control" placeholder="EM">
                 <datalist  id="EMList">
                     <option>E1</option>
                     <option>E2</option>
@@ -207,17 +198,17 @@
                 <label class="etiqueta" for="em">EM</label>
             </div> 
             <div class="form-floating col-2">
-                <input id="a1" name="canto_A1"  list="cantoA1" type="text" class="form-control" placeholder="A1">
+                <input id="a1" name="canto_A1" value="<%= results[0][0].canto_A1 %>" list="cantoA1" type="text" class="form-control" placeholder="A1">
                 <datalist id="cantoA1">
                     <option></option>
-                <% results[2].forEach(function(result) { %>
+                <% results[3].forEach(function(result) { %>
                     <option data-value="<%= result.id_Canto %>"> <%= result.cod_Canto%> </option>
                 <% }); %>
             </datalist>
                 <label class="etiqueta" for="a1">A1</label>
             </div> 
             <div class="form-floating col-2">
-                <input id="a2" name="canto_A2" type="text" list="cantoA2" class="form-control" placeholder="A2">
+                <input id="a2" name="canto_A2" value="<%= results[0][0].canto_A2 %>" type="text" list="cantoA2" class="form-control" placeholder="A2">
                 <datalist id="cantoA2">
                     <option></option>
                     <% results[3].forEach(function(result) { %>
@@ -227,7 +218,7 @@
                 <label class="etiqueta" for="a2">A2</label>
             </div> 
             <div class="form-floating col-2">
-                <input id="l1" name="canto_L1" type="text"  list="cantoL1" class="form-control" placeholder="L1">
+                <input id="l1" name="canto_L1" value="<%= results[0][0].canto_L1 %>" type="text"  list="cantoL1" class="form-control" placeholder="L1">
                 <datalist id="cantoL1">
                     <option></option>
                     <% results[3].forEach(function(result) { %>
@@ -237,7 +228,7 @@
                 <label class="etiqueta" for="l1">L1</label>
             </div> 
             <div class="form-floating col-2">
-                <input id="l2" name="canto_L2" type="text" list="cantoL2" class="form-control" placeholder="L2">
+                <input id="l2" name="canto_L2" value="<%= results[0][0].canto_L2 %>" type="text" list="cantoL2" class="form-control" placeholder="L2">
                 <datalist id="cantoL2">
                     <option></option>
                     <% results[3].forEach(function(result) { %>
@@ -248,30 +239,30 @@
             </div> 
 
             <div class="form-floating col-2">
-                <input id="tab" name="cant_Tablero" type="number" class="form-control" placeholder="TAB">
+                <input id="tab" name="cant_Tablero" value="<%= results[0][0].cant_Tablero %>" type="number" class="form-control" placeholder="TAB">
                 <label class="etiqueta" for="tab">Tab</label>
             </div>
             <div class="form-floating col-2">
-                <input id="ret" name="cant_RET" type="number" class="form-control" placeholder="RET">
+                <input id="ret" name="cant_RET" value="<%= results[0][0].cant_RET %>" type="number" class="form-control" placeholder="RET">
                 <label class="etiqueta" for="ret">Ret</label>
             </div> 
             <div class="form-floating col-2">
-                <input id="ml" name="medida_ML" type="number" step="any" class="form-control" placeholder="ML">
+                <input id="ml" name="medida_ML" value="<%= results[0][0].medida_ML %>" type="number" step="any" class="form-control" placeholder="ML">
                 <label class="etiqueta" for="ml">Ml</label>
             </div> 
             <div class="form-floating col-2">
-                <input id="ptr" name="PTR" type="text" class="form-control" placeholder="PTR">
+                <input id="ptr" name="PTR" value="<%= results[0][0].PTR %>" type="text" class="form-control" placeholder="PTR">
                 <label class="etiqueta" for="ptr">Ptr</label>
             </div> 
             <div class="form-floating col-2">
-                <input id="rem" name="REM" type="text" class="form-control" placeholder="REM">
+                <input id="rem" name="REM" value="<%= results[0][0].REM %>" type="text" class="form-control" placeholder="REM">
                 <label class="etiqueta" for="rem">Rem</label>
             </div>
             
             <div class="card-header text-dark fs-5">Transporte</div>
 
             <div class="form-floating col-4">
-                <input list="transList" id="transporte" name="tipo_Trasporte" type="text" class="form-control" placeholder="TRANSPORTE">
+                <input list="transList" id="transporte" name="tipo_Trasporte" value="<%= results[0][0].tipo_Trasporte %>" type="text" class="form-control" placeholder="TRANSPORTE">
                 <datalist id="transList">
                     <option>CLIENTE RECOGE</option>
                     <option>LOCAL</option>
@@ -290,11 +281,71 @@
                 </datalist>
                 <label class="etiqueta" for="transporte">Transporte</label>
             </div>
+        
             
-            <div class="card-footer bg-transparent">
-                <a href="/" type="button" class="btn btn-outline-danger">Cancelar</a>
-                <button  href = "/" class=" btn btn-outline-warning" id="agregar">Agregar</button>
+            <div class="card-footer bg-transparent" style="margin-top: 15px;">
+                <a href="/" type="button" class="btn btn-outline-danger" style="margin-right: 20px;">Cancelar</a>
+                <button  href = "/" class=" btn btn-outline-warning" id="agregar">Guardar</button>
             </div>
-      
+        </form>
+        </div>
+      </div>
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+               <!--Obtener Los productos-->
+    <script type="text/javascript" language="javascript" src="js/obtenerProducto.js"></script>
+
+    <!--Obtener datos del Cliente-->
+    <script type="text/javascript" language="javascript" src="js/obtenerCliente.js"> </script>
+        
+    <!--Actualizar pedido-->
+    <script>
+        document.getElementById('agregar').addEventListener("click", function(e){
+            e.preventDefault();
+
+       const nom = document.getElementById('nom_Cliente').value;
+       const des = document.getElementById('descripcion').value;
+       const fecE = document.getElementById('fecha_Entrega').value;
+       const est = document.getElementById('lugar_Destino').value;
+       const tras = document.getElementById('transporte').value;
+       const em = document.getElementById('em').value;
+
+       if(nom == '' || des == '' || fecE == '' || est == '' || tras == '' || em == ''){
+        Swal.fire({
+            title: "Precaucion",
+            text: "Datos Faltantes!!",
+            icon: "warning"
+        });
+        return; // Detener la ejecución del script
+       }
+            Swal.fire({
+                title: "Actualizar pedido?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Confirmar!"
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  var form = document.getElementById('updateProyecto');
+                  form.submit();
+                  
+                  Swal.fire({
+                    title: "Actualizado!",
+                    text: "Pedido actualizado!",
+                    icon: "success",
+                  }).then(() => {
+                    window.location.href = "/";
+                });
+                }
+              });
+           
+        });
+    </script>
+
+
 </body>
 </html>
