@@ -18,7 +18,7 @@ exports.register = async (req, res)=>{
                     {
                         console.log(error)
                     }
-                        res.redirect('/')
+                        res.json('Usuario Agregado')
                     })
                 
     } catch (error) {
