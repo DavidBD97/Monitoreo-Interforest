@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const sql = require('mssql');
-
 const {promisify} = require('util');
 
 exports.register = async (req, res)=>{    
@@ -78,8 +77,6 @@ exports.login = async(req, res)=>{
                     }
                 })
         }
-
-
     } catch (error) {
         console.log(error)
     }
@@ -93,9 +90,10 @@ exports.isAuthenticated = async (req, res, next)=>{
 
             pool.input('decodificada', decodificada.id)
                 .query('SELECT * FROM USUARIOS WHERE id_Usuario = @decodificada', (error, results)=>{
-                if(!results){return next()}
-                req.user = results[0]
-                return next()
+                if(results){
+                    req.user = results[0]
+                    return next()
+                }
             })
         } catch (error) {
             console.log(error)

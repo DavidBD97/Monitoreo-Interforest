@@ -1,10 +1,8 @@
 const saveButtons = document.querySelectorAll(".save-btn");
-
   saveButtons.forEach((button) => {
     button.addEventListener("click", function(e) {
       e.preventDefault();
       const row = this.parentElement.parentElement; 
-
       const selectFila = row.querySelectorAll('.celda-editable select')
       const valorPedido = row.querySelector('#pedidoCelda').innerText
 
@@ -42,12 +40,10 @@ const saveButtons = document.querySelectorAll(".save-btn");
         confirmButtonText: "Confirmar!"
       }).then((result)=>{
         if(result.isConfirmed){
-
           fetch(url, requestOptions)
             .then((response) => {
               if (response.ok) {
                console.log('Seccion de guardado')
-
             } else {
               throw new Error('Error en la solicitud.');
             }
@@ -55,7 +51,6 @@ const saveButtons = document.querySelectorAll(".save-btn");
           .catch(error => {
             console.error(error);
           });
-
           Swal.fire({
             title: "Editado!",
             text: "Pedido editado!",
@@ -63,7 +58,6 @@ const saveButtons = document.querySelectorAll(".save-btn");
           }).then(() => {
             window.location.href = "/";
           })
-
         }else{
           console.log('Seccion de Cancelar')
         }

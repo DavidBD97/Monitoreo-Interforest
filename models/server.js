@@ -1,10 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser')
-
 const {conexion} = require('../database/config');
-
 
 
 class Server{
@@ -22,12 +19,11 @@ class Server{
 
         //Rutas de  app
         this.routes();
-
     }
 
     async conectarDB(){
         await conexion();
-    }
+    }  
 
     middlewares(){
         //CORS
@@ -36,8 +32,6 @@ class Server{
         //seteamos el motor de plantillas
         this.app.set('view engine', 'ejs');
         
-        
-
         //para procesar datos enviados dede forms
         this.app.use(express.urlencoded({extended: true}))
         this.app.use(express.json())
@@ -58,7 +52,5 @@ class Server{
         console.log('Servidor online');
     }
 }
-
-
 
 module.exports = Server

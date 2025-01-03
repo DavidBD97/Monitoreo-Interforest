@@ -25,7 +25,6 @@ $(document).ready(function () {
         scrollY: 270,
         lengthMenu: [ [5, 10, -1], [5, 10, "All"] ],
     });
-
     table.on('draw.dt', function () {
         applyStyles();
     });

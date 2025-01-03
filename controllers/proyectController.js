@@ -1,27 +1,21 @@
 const sql = require('mssql');
 
-
 exports.newOperacion = async(req, res)=>{
     try {
         const pool = new sql.Request()
         const orden = {... req.body};
-
         let proyecto = '';
         let numP = 0;
         let fecha = '';
-
 
         //Obtener ID del Cliente
             const validarCliente = await pool.input('cliente', sql.VarChar, orden.nom_Cliente)
                                         .query('SELECT * FROM CLIENTE WHERE nom_Cliente = @cliente')
 
-
         //Obtener ID del Producto
             const idProducto = await pool.input('descripcion', sql.VarChar, orden.descripcion)
                                          .query('SELECT * FROM PRODUCTO WHERE descripcion = @descripcion')
             
-
-
         //Validar existencia del cliente
             if (validarCliente.rowsAffected[0] == 0) {
                 console.log('Entro en la validacion de existencia del cliente');
@@ -52,7 +46,6 @@ exports.newOperacion = async(req, res)=>{
                 
             }
 
-            
         //Convertir CORTE, ENCHAPE, EMBALAJE
         let corte, enchape, embalaje;  
         if(orden.CORTE == 'SI') {
@@ -79,7 +72,7 @@ exports.newOperacion = async(req, res)=>{
             embalaje = 2;
         }
 
-   const addProyecto = await pool.input('id_Cliente', sql.Int, idCliente.recordset[0].id_Cliente)
+   await pool.input('id_Cliente', sql.Int, idCliente.recordset[0].id_Cliente)
                                  .input('id_Producto', sql.Int, idProducto.recordset[0].id_Producto)
                                  .input('pedido', sql.VarChar, orden.pedido)
                                  .input('orden_de_Ped', sql.VarChar, proyecto)
@@ -116,12 +109,10 @@ exports.newOperacion = async(req, res)=>{
     }
 }
 
-
 exports.getDataRegister = async(req, res)=>{
     try{
-        const pool = new sql.Request()
+        const pool = new sql.Request() 
         const fechaHoy = new Date();
-
         const day = fechaHoy.getDate();
         const month = fechaHoy.getMonth() + 1;
         const year = fechaHoy.getFullYear();
@@ -141,7 +132,6 @@ exports.getDataRegister = async(req, res)=>{
               
         const diaFormateado = day < 10 ? `0${day}` : day;
         const mesFormateado = month < 10 ? `0${month}` : month;
-
         const fechaFormateada = `${year}-${mesFormateado}-${diaFormateado}`;
 
         const results = 
@@ -158,7 +148,6 @@ exports.getDataRegister = async(req, res)=>{
             console.log(error)
         }
 }
-
 
 exports.newCliente = async(req, res)=>{
     try {

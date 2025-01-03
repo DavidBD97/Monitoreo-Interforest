@@ -1,6 +1,5 @@
 const Express = require('express');
 const router = Express.Router();
-
 const auth = require('../controllers/authController')
 const proyecto = require('../controllers/proyectController');
 const monitoreo = require('../controllers/monitoreoController');
@@ -11,8 +10,6 @@ router.get('/', [auth.isAuthenticated, monitoreo.getData],(req, res)=>{})
 router.get('/login', (req, res)=>{res.render('login', {alert: false})})
 
 router.get('/register', [auth.isAuthenticated, proyecto.getDataRegister], (req, res)=>{})
-
-router.get('/registerUser', (req, res)=>{res.render('nuevo_usuario')})
 
 router.get('/detalle:pedido',[auth.isAuthenticated, monitoreo.getDataView] ,(req, res) => {
     res.render('detalle', {results})
@@ -38,8 +35,8 @@ router.post('/newCliente', proyecto.newCliente)
 
 router.post('/newProducto', proyecto.newProducto)
 
+router.post('/delete_Seleccionados', monitoreo.deleteSeleccionados)
 
 router.get('/logout', auth.logout)
-
 
 module.exports = router;

@@ -2,11 +2,9 @@ const sql = require('mssql');
 
 exports.getData = async (req, res) => {
     const pool = new sql.Request();
-
     const completo = 'ENTREGADO'
     pool.input('state', sql.VarChar, completo)
-        .query(
-        'SELECT C.nom_Cliente, C.correo, C.telefono, C.estado_Republica, C.CP, C.municipio_Ciudad,  P.id_Producto, P.pedido, P.fecha_Inicio, P.cant_PZAS, P.medida_M2, P.GA, P.estatus, P.fecha_Entrega, P.CORTE, P.ENCHAPE, P.EMBALAJE, P.tipo_EM, P.canto_A1, P.canto_A2, P.canto_L1, P.canto_L2, P.cant_Tablero, P.cant_RET, P.medida_ML, P.PTR, P.REM, P.lugar_Destino, P.tipo_Trasporte FROM CLIENTE AS C INNER JOIN PROYECTOS AS P ON C.id_Cliente = P.id_Cliente WHERE P.estatus <> @state ',
+        .query('SELECT C.nom_Cliente, C.correo, C.telefono, C.estado_Republica, C.CP, C.municipio_Ciudad,  P.id_Producto, P.pedido, P.fecha_Inicio, P.cant_PZAS, P.medida_M2, P.GA, P.estatus, P.fecha_Entrega, P.CORTE, P.ENCHAPE, P.EMBALAJE, P.tipo_EM, P.canto_A1, P.canto_A2, P.canto_L1, P.canto_L2, P.cant_Tablero, P.cant_RET, P.medida_ML, P.PTR, P.REM, P.lugar_Destino, P.tipo_Trasporte FROM CLIENTE AS C INNER JOIN PROYECTOS AS P ON C.id_Cliente = P.id_Cliente WHERE P.estatus <> @state ',
         (err, results) => {
             if (err) {
                 console.error(err);
@@ -24,11 +22,9 @@ exports.getData = async (req, res) => {
 
         const pedidoResult = await pool.input('pedidoP', sql.VarChar, pedido)
                                        .query('SELECT C.nom_Cliente, C.correo, C.telefono, C.estado_Republica, C.CP, C.municipio_Ciudad, T.cod_Tab, T.descripcion,  P.id_Producto, P.pedido, P.fecha_Inicio, P.cant_PZAS, P.medida_M2, P.GA, P.estatus, P.fecha_Entrega, P.CORTE, P.ENCHAPE, P.EMBALAJE, P.tipo_EM, P.canto_A1, P.canto_A2, P.canto_L1, P.canto_L2, P.cant_Tablero, P.cant_RET, P.medida_ML, P.PTR, P.REM, P.lugar_Destino, P.tipo_Trasporte FROM CLIENTE AS C INNER JOIN PROYECTOS AS P ON C.id_Cliente = P.id_Cliente INNER JOIN  PRODUCTO AS T ON P.id_Producto = T.id_Producto WHERE P.pedido = @pedidoP');
-
         const clienteResult = await pool.query('SELECT * FROM CLIENTE');
         const productoResult = await pool.query('SELECT * FROM PRODUCTO');
         const cantoResult = await pool.query('SELECT * FROM PRODUCTOS_CANTOS');
-
         const results = 
         [
             pedidoResult.recordset,
@@ -36,11 +32,7 @@ exports.getData = async (req, res) => {
             productoResult.recordset,
             cantoResult.recordset
         ]
-
-
-
         res.render('detalle', {results});
-        
     } catch (error) {
         console.error(error);
         res.status(500).send('Error interno del servidor');
@@ -50,13 +42,9 @@ exports.getData = async (req, res) => {
 exports.getDataPedidos = async(req , res )=>{
     try {
         const pool = new sql.Request();
-    
         const visual = await pool.query('SELECT C.nom_Cliente, C.correo, C.telefono, C.estado_Republica, C.CP, C.municipio_Ciudad, T.cod_Tab, T.descripcion,  P.id_Producto, P.pedido, P.orden_de_Ped, P.fecha_Inicio, P.cant_PZAS, P.medida_M2, P.GA, P.estatus, P.fecha_Entrega, P.CORTE, P.ENCHAPE, P.EMBALAJE, P.tipo_EM, P.canto_A1, P.canto_A2, P.canto_L1, P.canto_L2, P.cant_Tablero, P.cant_RET, P.medida_ML, P.PTR, P.REM, P.lugar_Destino, P.tipo_Trasporte FROM CLIENTE AS C INNER JOIN PROYECTOS AS P ON C.id_Cliente = P.id_Cliente INNER JOIN  PRODUCTO AS T ON P.id_Producto = T.id_Producto')
-
         return res.render('lista_pedidos', {results: visual.recordset})
-         
     } catch (error) {
-        // Manejar errores si es necesario
         console.error(error);
     }
 };
@@ -77,23 +65,18 @@ exports.updatePedido = async(req, res)=>{
     try {
         const pool = new sql.Request()
         const orden = {... req.body};
-
         let proyecto = '';
         let numP = 0;
-        let fecha = '';
-
+        let fecha = ''; 
 
         //Obtener ID del Cliente
             const validarCliente = await pool.input('cliente', sql.VarChar, orden.nom_Cliente)
                                         .query('SELECT * FROM CLIENTE WHERE nom_Cliente = @cliente')
-
-
+        
         //Obtener ID del Producto
             const idProducto = await pool.input('descripcion', sql.VarChar, orden.descripcion)
                                          .query('SELECT * FROM PRODUCTO WHERE descripcion = @descripcion')
             
-
-
         //Validar existencia del cliente
             if (validarCliente.rowsAffected[0] == 0) {
                 console.log('Entro en la validacion de existencia del cliente');
@@ -105,7 +88,7 @@ exports.updatePedido = async(req, res)=>{
                     .input('correoC', sql.VarChar, orden.correo)
                     .query('INSERT INTO CLIENTE (nom_Cliente, CP, estado_Republica, municipio_Ciudad, telefono, correo) VALUES (@nombreC, @cpC, @direccionC, @muniC, @telefonoC, @correoC)');
             }
-
+            //Obtener Id de cliente
             idCliente = await pool.input('client', sql.VarChar, orden.nom_Cliente)
                                   .query('SELECT * FROM CLIENTE WHERE nom_Cliente = @cliente')
 
@@ -123,8 +106,7 @@ exports.updatePedido = async(req, res)=>{
                 proyecto = 'P-' + fecha + '-' + numP.toString();
                 
             }
-
-            
+ 
         //Convertir CORTE, ENCHAPE, EMBALAJE
         let corte, enchape, embalaje;  
         if(orden.CORTE == 'SI') {
@@ -180,7 +162,7 @@ exports.updatePedido = async(req, res)=>{
                                  .query('UPDATE PROYECTOS SET id_Cliente = @id_Cliente, id_Producto = @id_Producto, pedido = @pedido, orden_de_Ped = @orden_de_Ped, fecha_Inicio = @fecha_Inicio, cant_PZAS = @cant_PZAS, medida_M2 = @medida_M2, GA = @GA, estatus = @estatus, fecha_Entrega = @fecha_Entrega,CORTE = @CORTE, ENCHAPE = @ENCHAPE, EMBALAJE = @EMBALAJE, tipo_EM = @tipo_EM, canto_A1 = @id_canto_A1, canto_A2 = @id_canto_A2, canto_L1 = @id_canto_L1, canto_L2 = @id_canto_L2, cant_Tablero = @cant_Tablero, cant_RET = @cant_RET, medida_ML = @medida_ML, PTR = @PTR, REM = @REM, lugar_Destino = @lugar_Destino, tipo_Trasporte = @tipo_Trasporte WHERE pedido = @pedido')
 
     } catch (error) {
-        
+        console.log(error)
     }
 }  
 
@@ -193,4 +175,25 @@ exports.deleteProyecto = async(req, res)=>{
     } catch (error) {
         console.log(error)
     }    
+};
+
+exports.deleteSeleccionados = async(req, res)=>{
+    try {
+        const pool = new sql.Request();
+        const body = { ...req.body };
+        let cadena = '';
+        for (let i = 0; i < body.pedidos.length; i++) {
+            cadena += "'" + body.pedidos[i] + "'";
+            if (i < body.pedidos.length - 1) {
+                cadena += ',';
+            }
+        }
+        console.log(cadena);
+        // Crear la consulta dinámica
+        const query = `DELETE FROM PROYECTOS WHERE pedido IN (${cadena})`;
+        // Ejecutar la consulta
+        await pool.query(query);
+    } catch (error) {
+        console.log(error)
+    }
 };
